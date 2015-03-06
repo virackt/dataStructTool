@@ -10,11 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 读取excel文件
@@ -23,6 +22,43 @@ import java.util.List;
 public class ExcelReader {
     private static final Logger log = LoggerFactory.getLogger("excelReader");
 
+    /**
+     * read files from the directory
+     * @param filePath a directory
+     * @return
+     */
+    public static Map<String, List<String>> readExcel(final String filePath){
+        File path = new File(filePath);
+        if(path == null || !path.isDirectory()){
+            log.error(path + " is not a directory!!!");
+            return null;
+        }
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        File[] files = path.listFiles(getExcelFilter());
+        for(File file : files){
+            map.put(file.getName().toLowerCase().replaceAll(".xlsx", ""), readExcel(file));
+        }
+        return map;
+    }
+
+    /**
+     * excel file filter,postfix must be xsls
+     * @return
+     */
+    private static FileFilter getExcelFilter(){
+        return new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".xlsx");
+            }
+        };
+    }
+
+    /**
+     * read data from excel and create sqls
+     * @param file
+     * @return
+     */
     public static List<String> readExcel(final File file) {
         if (!file.isFile()) {
             log.warn(file.getName() + " is not a file!!!");
