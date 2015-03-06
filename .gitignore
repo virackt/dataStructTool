@@ -10,3 +10,30 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+#Compiled source#
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+.classpath
+*.iml
+*.ipr
+*.iws
+.project
+.settings/
+.gradle/
+target/
+build/
+bin/
+tags
+.idea
+*.aof
+*.rdb
+
+#Packages#
+*.zip
+*.7z
+*.tar
+*.rar
