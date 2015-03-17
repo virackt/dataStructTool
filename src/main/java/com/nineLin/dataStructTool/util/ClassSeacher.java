@@ -1,6 +1,7 @@
 package com.nineLin.dataStructTool.util;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ClassSeacher<T> {
         if (file == null || !file.isDirectory()) {
             throw new RuntimeException("filepath error!!!! filePath = " + filePath);
         }
-        String[] fileNames = file.list();
+        String[] fileNames = file.list(getFileNameFilter());
         if (!filePath.endsWith("/")) {
             filePath = filePath + File.separator;
         }
@@ -71,5 +72,14 @@ public class ClassSeacher<T> {
             return clazz;
         }
         return null;
+    }
+
+    public FilenameFilter getFileNameFilter(){
+        return new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".class");
+            }
+        };
     }
 }
